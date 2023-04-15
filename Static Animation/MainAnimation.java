@@ -1,45 +1,52 @@
 package FullScreen;
 
 import java.awt.DisplayMode;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class MainAnimation {
 	private Screen screen;
-	private Image face1, face2, face3;
+	private ArrayList<Image> frames;
+	private Image bg; //background
 	private Animation a;
+	private static String path;
 	
 	public static void main(String[] args) {
 		DisplayMode dm = new DisplayMode(800,600,16, DisplayMode.REFRESH_RATE_UNKNOWN);
 		MainAnimation b = new MainAnimation();
+		
+		path = "C:\\Users\\thankYouGod\\Pictures\\java\\";
 		b.run(dm);   
 	}
 	
-	public void loadPics() {
-		face1 = new ImageIcon("C:\\Users\\thankYouGod\\Pictures\\java\\face1.png").getImage();	
-		face2 = new ImageIcon("C:\\Users\\thankYouGod\\Pictures\\java\\face2.png").getImage();	
-		face3 = new ImageIcon("C:\\Users\\thankYouGod\\Pictures\\java\\face3.png").getImage();	
+	public void loadPics(String path) {
 		a = new Animation(5000, this);
-		a.addScene(face1, 601); //in ms
-		a.addScene(face2, 300);
-		a.addScene(face3, 600);
-		a.addScene(face2, 300);
+		bg = new ImageIcon(path + "back.png").getImage();	
+		for (int i = 1; i <= 3; i++) {
+			frames.add(new ImageIcon(path + "face" + i + ".png").getImage());
+			a.addScene(frames.get(i-1), 601);
+		}
 	}
 	
 	public void run(DisplayMode dm) {
+		frames = new ArrayList<Image>();
 		screen = new Screen();
 		try {
 			screen.setFullScreen(dm, new JFrame());
-			loadPics();
+			loadPics(path);
 			a.start();
 		} finally {
 			screen.restoreScreen();
 		}
 	}
 	
-	public void draw(Image m) {
-		screen.getFullScreenWindow().getGraphics().drawImage(m, 0, 0, null);
+	public void draw(int framesIndex) {
+		Graphics g = screen.getFullScreenWindow().getGraphics();
+		g.drawImage(bg, 0, 0, null); //MUST be first, otherwise overlaps frame
+		g.drawImage(frames.get(framesIndex), 0, 0, null);
 	}
 }

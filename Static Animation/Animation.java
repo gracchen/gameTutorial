@@ -24,7 +24,7 @@ public class Animation {
 	
 	public synchronized void start() {
 		while(totalTime < duration) {
-			m.draw(scenes.get(sceneIndex).getKey());
+			m.draw(sceneIndex);
 			 //draw curr frame
 			System.out.print("Frame " + sceneIndex + ": ");
 			if (totalTime + scenes.get(sceneIndex).getValue() > duration) //if last frame, if shown in full, will exceed duration
