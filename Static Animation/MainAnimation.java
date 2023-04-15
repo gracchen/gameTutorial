@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 
 public class MainAnimation {
 	private Screen screen;
-	private Image face1, face2;
+	private Image face1, face2, face3;
 	private Animation a;
 	
 	public static void main(String[] args) {
@@ -20,9 +20,12 @@ public class MainAnimation {
 	public void loadPics() {
 		face1 = new ImageIcon("C:\\Users\\thankYouGod\\Pictures\\java\\face1.png").getImage();	
 		face2 = new ImageIcon("C:\\Users\\thankYouGod\\Pictures\\java\\face2.png").getImage();	
-		a = new Animation(5000, screen);
-		a.addScene(face1, 500); //in ms
-		a.addScene(face2, 500);
+		face3 = new ImageIcon("C:\\Users\\thankYouGod\\Pictures\\java\\face3.png").getImage();	
+		a = new Animation(5000, this);
+		a.addScene(face1, 601); //in ms
+		a.addScene(face2, 300);
+		a.addScene(face3, 600);
+		a.addScene(face2, 300);
 	}
 	
 	public void run(DisplayMode dm) {
@@ -34,5 +37,9 @@ public class MainAnimation {
 		} finally {
 			screen.restoreScreen();
 		}
+	}
+	
+	public void draw(Image m) {
+		screen.getFullScreenWindow().getGraphics().drawImage(m, 0, 0, null);
 	}
 }
